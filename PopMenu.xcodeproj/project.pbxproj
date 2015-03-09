@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		D25310A619D22AF30077E028 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25310A519D22AF30077E028 /* AppDelegate.swift */; };
-		D25310A819D22AF30077E028 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25310A719D22AF30077E028 /* ViewController.swift */; };
 		D25310AB19D22AF30077E028 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D25310A919D22AF30077E028 /* Main.storyboard */; };
 		D25310AD19D22AF30077E028 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D25310AC19D22AF30077E028 /* Images.xcassets */; };
 		D25310B019D22AF30077E028 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D25310AE19D22AF30077E028 /* LaunchScreen.xib */; };
 		D25310BC19D22AF30077E028 /* PopMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25310BB19D22AF30077E028 /* PopMenuTests.swift */; };
-		D25310C619D22EBC0077E028 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25310C519D22EBC0077E028 /* MenuView.swift */; };
-		D25310CA19D2554B0077E028 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25310C919D2554B0077E028 /* MenuController.swift */; };
+		D299F8041AAD161700EB041F /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D299F8031AAD161700EB041F /* Menu.swift */; };
+		D299F8081AAE304E00EB041F /* MenuComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D299F8071AAE304E00EB041F /* MenuComponents.swift */; };
+		D299F80A1AAE441E00EB041F /* ComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D299F8091AAE441E00EB041F /* ComponentTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,15 +31,15 @@
 		D25310A019D22AF30077E028 /* PopMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PopMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D25310A419D22AF30077E028 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D25310A519D22AF30077E028 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D25310A719D22AF30077E028 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D25310AA19D22AF30077E028 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D25310AC19D22AF30077E028 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D25310AF19D22AF30077E028 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		D25310B519D22AF30077E028 /* PopMenuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PopMenuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D25310BA19D22AF30077E028 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D25310BB19D22AF30077E028 /* PopMenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopMenuTests.swift; sourceTree = "<group>"; };
-		D25310C519D22EBC0077E028 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuView.swift; path = View/MenuView.swift; sourceTree = "<group>"; };
-		D25310C919D2554B0077E028 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuController.swift; path = Controller/MenuController.swift; sourceTree = "<group>"; };
+		D299F8031AAD161700EB041F /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		D299F8071AAE304E00EB041F /* MenuComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuComponents.swift; sourceTree = "<group>"; };
+		D299F8091AAE441E00EB041F /* ComponentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,13 +82,13 @@
 			isa = PBXGroup;
 			children = (
 				D25310A519D22AF30077E028 /* AppDelegate.swift */,
-				D25310A719D22AF30077E028 /* ViewController.swift */,
-				D25310C519D22EBC0077E028 /* MenuView.swift */,
 				D25310A919D22AF30077E028 /* Main.storyboard */,
-				D25310C919D2554B0077E028 /* MenuController.swift */,
 				D25310AC19D22AF30077E028 /* Images.xcassets */,
 				D25310AE19D22AF30077E028 /* LaunchScreen.xib */,
 				D25310A319D22AF30077E028 /* Supporting Files */,
+				D299F8031AAD161700EB041F /* Menu.swift */,
+				D299F8071AAE304E00EB041F /* MenuComponents.swift */,
+				D299F8091AAE441E00EB041F /* ComponentTests.swift */,
 			);
 			path = PopMenu;
 			sourceTree = "<group>";
@@ -218,10 +218,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D25310A819D22AF30077E028 /* ViewController.swift in Sources */,
-				D25310C619D22EBC0077E028 /* MenuView.swift in Sources */,
-				D25310CA19D2554B0077E028 /* MenuController.swift in Sources */,
+				D299F8081AAE304E00EB041F /* MenuComponents.swift in Sources */,
+				D299F80A1AAE441E00EB041F /* ComponentTests.swift in Sources */,
 				D25310A619D22AF30077E028 /* AppDelegate.swift in Sources */,
+				D299F8041AAD161700EB041F /* Menu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +415,7 @@
 				D25310C119D22AF30077E028 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D25310C219D22AF30077E028 /* Build configuration list for PBXNativeTarget "PopMenuTests" */ = {
 			isa = XCConfigurationList;
@@ -423,6 +424,7 @@
 				D25310C419D22AF30077E028 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

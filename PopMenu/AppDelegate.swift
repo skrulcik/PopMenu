@@ -16,6 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        // Override point for customization after application launch.
+        self.window!.backgroundColor = UIColor.whiteColor()
+        
+        let mainMenu = PopcornPopper()
+        self.window!.rootViewController = mainMenu
+        
+        self.window!.makeKeyAndVisible()
         return true
     }
 
