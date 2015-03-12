@@ -37,19 +37,19 @@ func testCircles(testController:UIViewController){
     testController.view.addSubview(b6)
 }
 
-func testPopcornButtons(testController:UIViewController){
-    let f = testController.view.frame
-    
-    let b1Frame = CGRect(x: 0,      y: 0, width: f.maxX/2, height: f.maxY/3)
-    let b1Range = AngleRange(start:3.0, end: 2.0, range:nil)
-    let b1Circ = Circle(radius:b1Frame.width/2, center:CGPoint(x: b1Frame.maxX/2, y: b1Frame.maxY/2))
-//    let b2Frame = CGRect(x: f.midX, y: 0, width: f.maxX/2, height: f.maxY/3)
-//    let b2Range = AngleRange(start:PI/2, end: 4*PI/3, range:nil)
-//    let b2Circ = Circle(radius:100, center:CGPoint(x: 3*f.midX/2, y: f.midY/2))
-    
-    let b1 = PopcornButton(frame: b1Frame, circle: b1Circ, range: b1Range)
-    b1.backgroundColor = UIColor.clearColor()
-    testController.view.addSubview(b1)
-//    let b2 = PopcornButton(frame: b1Frame, circle: b2Circ, range: b2Range)
-//    testController.view.addSubview(b2)
-}
+//func testPopcornButtons(testController:UIViewController){
+//    let f = testController.view.frame
+//    
+//    let b1Frame = CGRect(x: 0,      y: 0, width: f.maxX/2, height: f.maxY/3)
+//    let b1Range = AngleRange(start:3.0, end: 2.0, range:nil)
+//    let b1Circ = Circle(radius:b1Frame.width/2, center:CGPoint(x: b1Frame.maxX/2, y: b1Frame.maxY/2))
+////    let b2Frame = CGRect(x: f.midX, y: 0, width: f.maxX/2, height: f.maxY/3)
+////    let b2Range = AngleRange(start:PI/2, end: 4*PI/3, range:nil)
+////    let b2Circ = Circle(radius:100, center:CGPoint(x: 3*f.midX/2, y: f.midY/2))
+//    
+//    let b1 = PopcornButton(frame: b1Frame, circle: b1Circ, range: b1Range)
+//    b1.backgroundColor = UIColor.clearColor()
+//    testController.view.addSubview(b1)
+////    let b2 = PopcornButton(frame: b1Frame, circle: b2Circ, range: b2Range)
+////    testController.view.addSubview(b2)
+//}

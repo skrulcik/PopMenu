@@ -74,7 +74,6 @@ class PopcornController:UIViewController, PopcornRendererDelegate {
         return kernels.count
     }
     func colorForKernel(i:Int) -> UIColor {
-        let btn = PopcornButton()
         if i < kernels.count {
             return kernels[i].backgroundColor
         } else {
