@@ -28,9 +28,10 @@ class PopcornController:UIViewController, PopcornRendererDelegate {
     required init(coder aDecoder: NSCoder) {
         kernels = [Popcorn]()
         // For testing only
-        let p1 = Popcorn(backgroundColor: UIColor.redColor())
-        let p2 = Popcorn(backgroundColor: UIColor.blueColor())
-        kernels = [p1, p2]
+        let p1 = Popcorn(backgroundColor: Color.accent)
+        let p2 = Popcorn(backgroundColor: Color.accentDark)
+        let p3 = Popcorn(backgroundColor: Color.accent)
+        kernels = [p1, p2, p3]
         self.menu = PopcornRenderer()
         super.init(coder: aDecoder)
         self.menu.delegate = self
@@ -39,9 +40,10 @@ class PopcornController:UIViewController, PopcornRendererDelegate {
     override init() {
         kernels = [Popcorn]()
         // For testing only
-        let p1 = Popcorn(backgroundColor: UIColor.redColor())
-        let p2 = Popcorn(backgroundColor: UIColor.blueColor())
-        kernels = [p1, p2]
+        let p1 = Popcorn(backgroundColor: Color.accent)
+        let p2 = Popcorn(backgroundColor: Color.accentDark)
+        let p3 = Popcorn(backgroundColor: Color.accent)
+        kernels = [p1, p2, p3]
         self.menu = PopcornRenderer()
         super.init()
         self.menu.delegate = self
@@ -50,9 +52,10 @@ class PopcornController:UIViewController, PopcornRendererDelegate {
         
         kernels = [Popcorn]()
         // For testing only
-        let p1 = Popcorn(backgroundColor: UIColor.redColor())
-        let p2 = Popcorn(backgroundColor: UIColor.blueColor())
-        kernels = [p1, p2]
+        let p1 = Popcorn(backgroundColor: Color.accent)
+        let p2 = Popcorn(backgroundColor: Color.accentDark)
+        let p3 = Popcorn(backgroundColor: Color.accent)
+        kernels = [p1, p2, p3]
         self.menu = PopcornRenderer()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.menu.delegate = self
@@ -83,9 +86,7 @@ class PopcornController:UIViewController, PopcornRendererDelegate {
     func menuTapped(i:Int) {
         if i == -1 {
             state = (state == .Active) ? .Inactive:.Active
-            UIView.animateWithDuration(0.6, animations: {
-                self.menu.frame = self.menuFrameForState()
-            })
+            self.menu.explodeTo(menuFrameForState())
         }
     }
     func  menuFrameForState() -> CGRect{

@@ -24,7 +24,7 @@ class PopcornRenderer:UIView {
     // Drawing Specs
     @IBInspectable var collapsedSizeRatio:CGFloat = 0.5
     @IBInspectable var actionCircleRatio:CGFloat = 0.7
-    @IBInspectable var bufferRatio:CGFloat = 0.1
+    @IBInspectable var bufferRatio:CGFloat = 0.05
     var buttonWidthRatio:CGFloat {
         get {
             return 1.0 - actionCircleRatio - bufferRatio
@@ -84,7 +84,7 @@ class PopcornRenderer:UIView {
     
     func pathFor(i:Int) -> UIBezierPath {
         let lowRight = AngleRange(start: PI, end: PI/2, range: PI/2)
-        let angleRange = ithAngleRange(i, n: numKernels, parentRange: lowRight, bufferAngle: 0.2)
+        let angleRange = ithAngleRange(i, n: numKernels, parentRange: lowRight, bufferAngle: 0.05)
         let k = min(frame.width, frame.height)
         let rOut = k
         let rIn = k * (1 - buttonWidthRatio)
@@ -114,6 +114,15 @@ class PopcornRenderer:UIView {
         p.closePath()
         
         return p
+    }
+    
+    func explodeTo(rect:CGRect){
+        UIView.animateWithDuration(0.5, animations: {
+            self.frame = rect
+        })
+    }
+    func shrinkTo(rect:CGRect){
+        
     }
     
     func ithAngleRange(i:Int, n:Int,
