@@ -9,98 +9,117 @@
 import Foundation
 import UIKit
 
-enum CirclePosition {
-    // Compass directions, and centered
-    case Centered, N, S, E, W, NE, SE, SW, NW
-}
+//
+//protocol PopcornMenuViewDelegate {
+//    func arcViewFrame() -> CGRect
+//    func tapPathForPopcornItem(index i:Int, of n:Int) -> UIBezierPath
+//}
+//
+//
+//class PopcornMenuView:UIView {
+//    var mainArc:CircleView
+//    var delegate:PopcornMenuViewDelegate?
+//    // Whenever frame changes, update subviews
+//    override var frame:CGRect {
+//        didSet {
+//            adjustFrames()
+//        }
+//    }
+//    
+//    required init(coder aDecoder: NSCoder) {
+//        mainArc = CircleView()
+//        super.init(coder: aDecoder)
+//    }
+//    
+//    func adjustFrames() {
+//        // TODO: Fix subview layouts
+//    }
+//    
+//    override func drawRect(rect: CGRect) {
+//        // TODO: draw button paths
+//    }
+//    
+//    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+//        // TODO: Implement clicker function
+//    }
+//    
+//}
 
-class CircleView:UIButton {
-    var centerStyle:CirclePosition
-    var arcColor:UIColor? {
-        didSet {
-            // Custom colors only work on transparent buttons
-            backgroundColor = UIColor.clearColor()
+class PopcornButton:UIView {
+    var circle:Circle // Outer radius for button
+    var angles:AngleRange
+    var fringeDepthFactor:CGFloat = 0.2 // Button thickness
+    var fillColor:UIColor = UIColor.redColor()
+    
+    // Calculated properties
+    var path:UIBezierPath? {
+        get{
+            return self.calculatePath()
+        }
+    }
+    private var fringeDepth:CGFloat {
+        get {
+            return min(frame.width, frame.height) * fringeDepthFactor
+        }
+    }
+    private var innerCircle:Circle {
+        get {
+            return Circle(radius: circle.radius - fringeDepth,
+                            center: circle.center)
         }
     }
     
-    // Overriden initializers
-    override init() {
-        centerStyle = .Centered
-        super.init()
+    
+    init(frame:CGRect, circle C:Circle, range:AngleRange) {
+        circle = C
+        angles = range
+        super.init(frame: frame)
+    }
+    convenience init(frame:CGRect, circle C:Circle) {
+        self.init(frame:frame, circle:C, range:AngleRange(start: 0, end: PI/2.0, range: nil))
+    }
+    convenience override init() {
+        self.init(frame: CGRect(x:0, y:0, width:100, height:100))
+    }
+    convenience override init(frame: CGRect) {
+        let aCircle = Circle(radius: min(frame.width, frame.height), center: CGPoint(x: 0,y: 0))
+        self.init(frame: frame, circle:aCircle)
     }
     required init(coder aDecoder: NSCoder) {
-        centerStyle = .Centered
+        circle = Circle(radius: 0, center: CGPoint(x:0,y:0)) // Placeholder
+        angles = AngleRange(start: 0, end: PI/2.0, range: nil)
         super.init(coder: aDecoder)
+        circle = Circle(radius: min(frame.width, frame.height), center: CGPoint(x: 0,y: 0))
     }
-    override init(frame: CGRect) {
-        centerStyle = .Centered
-        super.init(frame: frame)
+    
+    func calculatePath() -> UIBezierPath {
+        let out1 = circle.pointOnCircle(2*PI - angles.start)
+        let out2 = circle.pointOnCircle(2*PI - angles.end)
+        let in1 = innerCircle.pointOnCircle(2*PI - angles.start)
+        let in2 = innerCircle.pointOnCircle(2*PI - angles.end)
+        
+        var p = UIBezierPath()
+        p.moveToPoint(out1)
+        // Outer arc
+        p.addArcWithCenter(circle.center, radius: circle.radius,
+                            startAngle: 2*PI - angles.start, endAngle: 2*PI - angles.end,
+                            clockwise: true)
+        p.addLineToPoint(in2)
+        // Inner circle
+        p.addArcWithCenter(innerCircle.center, radius: innerCircle.radius,
+                            startAngle: 2*PI - angles.end, endAngle: 2*PI - angles.start,
+                            clockwise: false)
+        p.closePath()
+        
+        return p
     }
-    // Custom Initializers
-    init(centerStyle center:CirclePosition) {
-        centerStyle = center
-        super.init()
-        //TODO: Figure out why this is necessary
-        centerStyle = center
-    }
-    init(frame:CGRect, withCenter center:CirclePosition) {
-        centerStyle = center
-        super.init(frame: frame)
-        centerStyle = center
-    }
+    
     
     
     override func drawRect(rect: CGRect) {
-        // Radius if circle is in not center
-        var maxRadius:CGFloat = min(rect.width, rect.height) / 2.0
-        // Center coordinates:
-        var x:CGFloat
-        var y:CGFloat
-        switch centerStyle {
-            case .Centered:
-                x = rect.midX
-                y = rect.midY
-            case .N:
-                x = rect.midX
-                y = rect.minY
-            case .S:
-                x = rect.midX
-                y = rect.maxY
-            case .E:
-                x = rect.maxX
-                y = rect.midY
-            case .W:
-                x = rect.minX
-                y = rect.midY
-            case .NE:
-                x = rect.maxX
-                y = rect.minY
-            case .SE:
-                x = rect.maxX
-                y = rect.maxY
-            case .SW:
-                x = rect.minX
-                y = rect.maxY
-            case .NW:
-                x = rect.minX
-                y = rect.minY
-            default:
-                // Centered
-                maxRadius = maxRadius / 2.0
-                x = rect.midX
-                y = rect.midY
-        }
-        // Circle to be drawn
-        let circ = UIBezierPath(arcCenter: CGPoint(x: x, y: y),
-                                    radius: maxRadius,
-                                    startAngle: 0, endAngle: 2.0*CGFloat(M_PI),
-                                    clockwise: false)
-        arcColor?.setFill()
-        circ.fill()
+        super.drawRect(rect)
+        fillColor.setFill()
+        self.path?.fill()
     }
-}
-
-class PopcornButton:UIButton {
-    
 }
 

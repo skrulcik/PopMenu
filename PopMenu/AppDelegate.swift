@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window!.backgroundColor = UIColor.whiteColor()
         
-        let mainMenu = PopcornPopper()
+        let mainMenu = PopcornController()
         self.window!.rootViewController = mainMenu
         
         self.window!.makeKeyAndVisible()

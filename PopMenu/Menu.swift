@@ -9,56 +9,15 @@
 import Foundation
 import UIKit
 
-/* A Popcorn is a data object to represent a button of the pop menu
-    - A popcorn object is created once, then added to the menu, where it is
-        maintained and used to draw draw the buttons, and send commands
-    - The delegate is used so that different view controllers can own different 
-        pieces of Popcorn in the same menu
-    - Color properties are used for rendering. Position and size attributes are
-        purposely left up to the popper that manages the Popcorn
-*/
-struct Popcorn:Equatable, Hashable {
-    /* Foreground color for text */
-    var color:UIColor?
-    /* Background for the radial button representative of this piece */
-    var backgroundColor:UIColor?
-    /* ViewController that wants to know when button is pressed */
-    var delegate:UIViewController
-    var id:Int
-    var hashValue:Int {
-        get {
-            return id
-        }
-    }
-}
-/* Equality function for Popcorn object */
-func ==(lhs: Popcorn, rhs: Popcorn) -> Bool {
-    return lhs.delegate == rhs.delegate && lhs.id == rhs.id
-}
-
-
-
-/* PopcornDelegate is the view controller that wants information when a specific
-    popcorn button is pressed */
-protocol PopcornDelegate {
-    /* Called when Popcorn has first been pressed */
-    func menuItemPress(senderID:Int)
-    /* Called when finger is released in area of popcorn */
-    func menuItemRelease(senderID:Int)
-}
-
-enum PopcornMenuState {
-    case Inactive, Active
-}
-
 /* PopcornPopper is a Popcorn menu controller
  *  It keeps track of pieces of popcorn, and uses them to generate menu items
  */
 @IBDesignable
-class PopcornPopper:UIViewController {
-    @IBInspectable var animationDuration:NSTimeInterval = 0.25
-    @IBInspectable var sizeWhenClosed:CGSize = CGSize(width: 100, height: 100)
-    @IBInspectable var sizeWhenExpanded:CGSize = CGSize(width: 200, height: 200)
+class PopcornMenu:UIViewController {
+    @IBInspectable var fringeRatio:CGFloat = 0.2 // Portion of view dedicated to popcorn
+    @IBInspectable var animationDuration:NSTimeInterval = 0.15
+    @IBInspectable var sizeWhenClosed:CGSize = CGSize(width: 160, height: 160)
+    @IBInspectable var sizeWhenExpanded:CGSize = CGSize(width: 400, height: 400)
     
     // describes the drawing and interaction state of the menu
     var state:PopcornMenuState = .Inactive {
@@ -75,7 +34,6 @@ class PopcornPopper:UIViewController {
     
     // Private views used to illustrate menu
     private var arcView:CircleView
-    private var buttons = Dictionary<Popcorn, PopcornButton>()
     
     required init(coder aDecoder: NSCoder) {
         arcView = CircleView(centerStyle: .SE)
@@ -98,20 +56,6 @@ class PopcornPopper:UIViewController {
         arcView.addTarget(self, action:"toggleState" , forControlEvents: .TouchUpInside)
     }
     
-    func  menuFrameForState() -> CGRect{
-        var properSize:CGSize
-        switch state {
-            case .Active :
-                properSize = sizeWhenExpanded
-            default:
-                properSize = sizeWhenClosed
-        }
-        let w = properSize.width
-        let h = properSize.height
-        let pt = CGPoint(x: view.frame.width - w, y: view.frame.height - h)
-        return CGRect(origin: pt, size: properSize)
-    }
-    
     func updateMenuForState() {
         UIView.animateWithDuration(animationDuration, animations: {
             self.arcView.frame = self.menuFrameForState()
@@ -121,6 +65,64 @@ class PopcornPopper:UIViewController {
     func toggleState() {
         state = (state == .Active) ? .Inactive:.Active
         updateMenuForState()
+    }
+    
+    //MARK: Drawing Calculations
+    private func  menuFrameForState() -> CGRect{
+        var properSize:CGSize
+        switch state {
+        case .Active :
+            properSize = sizeWhenExpanded
+        default:
+            properSize = sizeWhenClosed
+        }
+        let w = properSize.width
+        let h = properSize.height
+        let pt = CGPoint(x: view.frame.width - w, y: view.frame.height - h)
+        return CGRect(origin: pt, size: properSize)
+    }
+    
+    func arcViewFrame() -> CGRect {
+        let largeFrame = menuFrameForState()
+        let axis = min(largeFrame.width, largeFrame.height) * (1 - fringeRatio)
+        var menuFrame = CGRectInset(largeFrame, axis, axis) // Make frame smaller
+        menuFrame = menuFrame.rectByOffsetting(dx: axis, dy: axis) // Offset frame to still be in the bottom right
+        return menuFrame
+    }
+    func tapPathForPopcornItem(index i:Int, of n:Int) -> UIBezierPath {
+        if state == .Active {
+            
+            let angles = angleRangeForPopcornItem(index: i, of:n)
+            let largeFrame = menuFrameForState()
+            let circle = Circle(radius: min(largeFrame.width, largeFrame.height),
+                center: CGPoint(x: largeFrame.maxX, y: largeFrame.maxY))
+            let innerCircle = Circle.insetCircle(circle, dr: circle.radius*fringeRatio)
+            
+            let out1 = circle.pointOnCircle(2*PI - angles.start)
+            let out2 = circle.pointOnCircle(2*PI - angles.end)
+            let in1 = innerCircle.pointOnCircle(2*PI - angles.start)
+            let in2 = innerCircle.pointOnCircle(2*PI - angles.end)
+            
+            var p = UIBezierPath()
+            p.moveToPoint(out1)
+            // Outer arc
+            p.addArcWithCenter(circle.center, radius: circle.radius,
+                startAngle: 2*PI - angles.start, endAngle: 2*PI - angles.end,
+                clockwise: true)
+            p.addLineToPoint(in2)
+            // Inner circle
+            p.addArcWithCenter(innerCircle.center, radius: innerCircle.radius,
+                startAngle: 2*PI - angles.end, endAngle: 2*PI - angles.start,
+                clockwise: false)
+            p.closePath()
+            
+            return p
+        } else {
+            return UIBezierPath()
+        }
+    }
+    func angleRangeForPopcornItem(index i:Int, of n:Int) -> AngleRange {
+        return AngleRange(start: 3.0, end: 2.0, range: nil)
     }
 }
 
