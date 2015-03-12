@@ -70,46 +70,37 @@ class PopcornController:UIViewController, PopcornRendererDelegate {
     func numKernels() -> Int {
         return kernels.count
     }
-    func buttonForIndex(i:Int) -> PopcornButton {
+    func colorForKernel(i:Int) -> UIColor {
         let btn = PopcornButton()
         if i < kernels.count {
-            btn.backgroundColor = UIColor.clearColor()
-            btn.fillColor = kernels[i].backgroundColor
-            btn.angles = ithAngleRange(i, n: kernels.count)
+            return kernels[i].backgroundColor
         } else {
             NSLog("Warning: attempted to access non-existant kernel")
         }
-        return btn
+        return UIColor.clearColor()
     }
-    func menuTapped() {
-        state = (state == .Active) ? .Inactive:.Active
-        UIView.animateWithDuration(0.6, animations: {
-            self.menu.frame = self.menuFrameForState()
-        })
+    // i is -1 for main menu, 0...(n-1) for the other n popcorn items
+    func menuTapped(i:Int) {
+        if i == -1 {
+            state = (state == .Active) ? .Inactive:.Active
+            UIView.animateWithDuration(0.6, animations: {
+                self.menu.frame = self.menuFrameForState()
+            })
+        }
     }
     func  menuFrameForState() -> CGRect{
         var properSize:CGSize
         switch state {
         case .Active :
-            properSize = CGSize(width: self.view.frame.width * 0.6, height: self.view.frame.width * 0.6)
+            properSize = CGSize(width: self.view.frame.width * 0.8, height: self.view.frame.width * 0.8)
         default:
-            properSize = CGSize(width: self.view.frame.width * 0.2, height: self.view.frame.width * 0.2)
+            properSize = CGSize(width: self.view.frame.width * 0.4, height: self.view.frame.width * 0.4)
         }
         let w = properSize.width
         let h = properSize.height
         let pt = CGPoint(x: view.frame.width - w, y: view.frame.height - h)
         return CGRect(origin: pt, size: properSize)
     }
-    
-    func ithAngleRange(i:Int, n:Int,
-                        parentRange:AngleRange = AngleRange(start: PI/2.0, end: PI, range: nil),
-                        bufferAngle:CGFloat = 0.2) -> AngleRange {
-        let bufferSum = CGFloat(n + 1) * bufferAngle // One before each, one at end
-        let portion = (parentRange.end - parentRange.start) / CGFloat(n)
-        let startAt = parentRange.start + CGFloat(n+1)*bufferAngle + CGFloat(n)*portion
-        return AngleRange(start: startAt, end: startAt + portion, range: portion)
-    }
-    
 }
 
 
